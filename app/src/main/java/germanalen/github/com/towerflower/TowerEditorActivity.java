@@ -43,12 +43,12 @@ public class TowerEditorActivity extends AppCompatActivity {
     }
 
     private void updateDna() {
-        float[] dna = new float[TowerDrawer.DNA_SIZE];
+        double[] dna = new double[TowerDrawer.DNA_SIZE];
 
         LinearLayout seekBars = findViewById(R.id.seekBars);
         for (int i = 0; i < seekBars.getChildCount(); ++i) {
             SeekBar seekBar = (SeekBar) seekBars.getChildAt(i);
-            dna[i] = seekBar.getProgress() / 100f;
+            dna[i] = seekBar.getProgress() / 100.0;
         }
 
 

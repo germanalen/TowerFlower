@@ -15,9 +15,6 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "TOWER_FLOWER";
 
-    // TODO
-    // Activity with list of towers
-    // Tower editing activity
 
 
     @Override

@@ -32,7 +32,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthMask(true);
 
         towerDrawer = new TowerDrawer(resources);
-        towerDrawer.generateMesh(new float[TowerDrawer.DNA_SIZE]);
+        towerDrawer.generateMesh(new double[TowerDrawer.DNA_SIZE]);
     }
 
     @Override

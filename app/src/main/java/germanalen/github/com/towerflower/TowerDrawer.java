@@ -114,16 +114,16 @@ public class TowerDrawer {
 
     public static final int DNA_SIZE = 5;
 
-    public void generateMesh(float[] dna) {
+    public void generateMesh(double[] dna) {
         // {vx, vy, vz, r, g, b, nx, ny, nz, ...}
         ArrayList<Float> v = new ArrayList<>();
 
         int numY = (int)(5 + dna[0] * 20);
         int numP = (int)(5 + dna[1] * 20);
 
-        float freq = dna[2] * 10;
-        float minR = dna[3] + 0.1f;
-        float offR = dna[4];
+        float freq = (float)dna[2] * 10;
+        float minR = (float)dna[3] + 0.1f;
+        float offR = (float)dna[4];
 
 
         float height = 4;
