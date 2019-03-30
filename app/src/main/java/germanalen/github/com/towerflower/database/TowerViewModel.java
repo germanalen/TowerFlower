@@ -16,11 +16,19 @@ public class TowerViewModel extends AndroidViewModel {
         mAllTowers = mRepository.getAllTowers();
     }
 
-    LiveData<List<Tower>> getAllTowers() {
+    public LiveData<List<Tower>> getAllTowers() {
         return mAllTowers;
     }
 
     public void insert(Tower tower) {
         mRepository.insert(tower);
+    }
+
+    public void update(Tower tower) {
+        mRepository.update(tower);
+    }
+
+    public void delete(Tower tower) {
+        mRepository.delete(tower);
     }
 }

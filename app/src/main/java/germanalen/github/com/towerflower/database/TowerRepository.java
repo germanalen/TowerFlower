@@ -24,6 +24,14 @@ public class TowerRepository {
         new insertAsyncTask(mTowerDao).execute(tower);
     }
 
+    public void update(Tower tower) {
+        new updateAsyncTask(mTowerDao).execute(tower);
+    }
+
+    public void delete(Tower tower) {
+        new deleteAsyncTask(mTowerDao).execute(tower);
+    }
+
     private static class insertAsyncTask extends AsyncTask<Tower, Void, Void> {
 
         private TowerDao mAsyncTaskDao;
@@ -35,6 +43,36 @@ public class TowerRepository {
         @Override
         protected Void doInBackground(final Tower... params) {
             mAsyncTaskDao.insert(params[0]);
+            return null;
+        }
+    }
+
+    private static class updateAsyncTask extends AsyncTask<Tower, Void, Void> {
+
+        private TowerDao mAsyncTaskDao;
+
+        updateAsyncTask(TowerDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Tower... params) {
+            mAsyncTaskDao.update(params[0]);
+            return null;
+        }
+    }
+
+    private static class deleteAsyncTask extends AsyncTask<Tower, Void, Void> {
+
+        private TowerDao mAsyncTaskDao;
+
+        deleteAsyncTask(TowerDao dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final Tower... params) {
+            mAsyncTaskDao.delete(params[0]);
             return null;
         }
     }

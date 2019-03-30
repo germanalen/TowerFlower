@@ -29,6 +29,9 @@ public class TowerDrawer {
 
     private double[] dna = new double[DNA_SIZE];
 
+    public double[] getDna() {
+        return dna;
+    }
 
     public void setDna(double[] dna) {
         if (dna.length != DNA_SIZE)

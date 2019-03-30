@@ -1,17 +1,20 @@
 package germanalen.github.com.towerflower;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
+import germanalen.github.com.towerflower.database.Tower;
+import germanalen.github.com.towerflower.database.TowerViewModel;
 import germanalen.github.com.towerflower.graphics.MyGLRenderer;
 import germanalen.github.com.towerflower.graphics.MyGLSurfaceView;
 import germanalen.github.com.towerflower.graphics.TowerDrawer;
 
 public class TowerEditorActivity extends AppCompatActivity {
-
+    private Tower tower;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +22,12 @@ public class TowerEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tower_editor);
 
 
-        double[] dna = getIntent().getDoubleArrayExtra("dna");
+        tower = getIntent().getParcelableExtra("tower");
         MyGLSurfaceView glSurfaceView = findViewById(R.id.glSurfaceView);
         MyGLRenderer renderer = glSurfaceView.getRenderer();
-        TowerDrawer towerDrawer = renderer.getTowerDrawer();
+        final TowerDrawer towerDrawer = renderer.getTowerDrawer();
+
+        double[] dna = tower.decodeDna();
         towerDrawer.setDna(dna);
 
 
@@ -39,7 +44,8 @@ public class TowerEditorActivity extends AppCompatActivity {
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    updateDna();
+                    towerDrawer.setDna(getDnaFromUi());
+                    towerDrawer.generateMesh();
                 }
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {}
@@ -51,7 +57,17 @@ public class TowerEditorActivity extends AppCompatActivity {
         }
     }
 
-    private void updateDna() {
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        tower.encodeDna(getDnaFromUi());
+
+        TowerViewModel towerViewModel = ViewModelProviders.of(this).get(TowerViewModel.class);
+        towerViewModel.update(tower);
+    }
+
+    private double[] getDnaFromUi() {
         double[] dna = new double[TowerDrawer.DNA_SIZE];
 
         LinearLayout seekBars = findViewById(R.id.seekBars);
@@ -60,12 +76,6 @@ public class TowerEditorActivity extends AppCompatActivity {
             dna[i] = seekBar.getProgress() / 100.0;
         }
 
-
-
-        MyGLSurfaceView glSurfaceView = findViewById(R.id.glSurfaceView);
-        MyGLRenderer renderer = glSurfaceView.getRenderer();
-        TowerDrawer towerDrawer = renderer.getTowerDrawer();
-        towerDrawer.setDna(dna);
-        towerDrawer.generateMesh();
+        return dna;
     }
 }

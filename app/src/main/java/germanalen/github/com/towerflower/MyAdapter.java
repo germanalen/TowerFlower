@@ -7,11 +7,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import germanalen.github.com.towerflower.database.Tower;
 import germanalen.github.com.towerflower.graphics.MyGLSurfaceView;
 import germanalen.github.com.towerflower.graphics.TowerDrawer;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-
+    private List<Tower> towers;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -19,6 +23,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         private MyGLSurfaceView view;
+        private Tower tower;
         public ViewHolder(MyGLSurfaceView v, final Context context) {
             super(v);
             view = v;
@@ -26,11 +31,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, TowerEditorActivity.class);
-                    double[] dna = {0.9,0.9,0.5,0.2,0.4};
-                    intent.putExtra("dna", dna);
+                    intent.putExtra("tower", tower);
                     context.startActivity(intent);
                 }
             });
+        }
+
+        public void setTower(Tower tower) {
+            this.tower = tower;
+            view.getRenderer().getTowerDrawer().setDna(tower.decodeDna());
         }
     }
 
@@ -55,13 +64,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        double[] dna = {0.9,0.9,0.5,0.2,0.4};
-        holder.view.getRenderer().getTowerDrawer().setDna(dna);
+        holder.setTower(towers.get(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return 7;
+        if (towers == null)
+            return 0;
+        return towers.size();
+    }
+
+    public void setTowers(List<Tower> towers) {
+        this.towers = towers;
+        notifyDataSetChanged();
     }
 }

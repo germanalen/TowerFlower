@@ -8,7 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 
-@Database(entities = {Tower.class}, version = 1)
+@Database(entities = {Tower.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TowerDao towerDao();
 
@@ -48,9 +48,11 @@ public abstract class AppDatabase extends RoomDatabase {
         @Override
         protected Void doInBackground(final Void... params) {
             mDao.deleteAll();
-            Tower tower= new Tower(1, "firstOne", 1.1);
+            Tower tower= new Tower(1, "firstOne", "");
+            tower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
             mDao.insert(tower);
-            tower = new Tower(2, "secondOne", 2.2);
+            tower = new Tower(2, "secondOne", "");
+            tower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
             mDao.insert(tower);
             return null;
         }
