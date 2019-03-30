@@ -3,12 +3,12 @@ package germanalen.github.com.towerflower;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import germanalen.github.com.towerflower.graphics.MyGLSurfaceView;
+import germanalen.github.com.towerflower.graphics.TowerDrawer;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
@@ -26,6 +26,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, TowerEditorActivity.class);
+                    double[] dna = {0.9,0.9,0.5,0.2,0.4};
+                    intent.putExtra("dna", dna);
                     context.startActivity(intent);
                 }
             });
@@ -53,13 +55,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        //holder.textView.setText(Integer.toString(position));
-
+        double[] dna = {0.9,0.9,0.5,0.2,0.4};
+        holder.view.getRenderer().getTowerDrawer().setDna(dna);
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return 20;
+        return 7;
     }
 }

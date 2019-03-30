@@ -1,4 +1,4 @@
-package germanalen.github.com.towerflower;
+package germanalen.github.com.towerflower.database;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;

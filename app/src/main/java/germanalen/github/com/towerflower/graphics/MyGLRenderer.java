@@ -1,4 +1,4 @@
-package germanalen.github.com.towerflower;
+package germanalen.github.com.towerflower.graphics;
 
 import android.content.res.Resources;
 import android.opengl.GLES20;
@@ -9,12 +9,14 @@ import android.util.Log;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import germanalen.github.com.towerflower.MainActivity;
+
 public class MyGLRenderer implements GLSurfaceView.Renderer {
     private final float[] viewMatrix = new float[16];
     private final float[] projectionMatrix = new float[16];
 
     private Resources resources;
-    private TowerDrawer towerDrawer;
+    private TowerDrawer towerDrawer = new TowerDrawer();
 
     public TowerDrawer getTowerDrawer() {
         return towerDrawer;
@@ -31,8 +33,7 @@ public class MyGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
         GLES20.glDepthMask(true);
 
-        towerDrawer = new TowerDrawer(resources);
-        towerDrawer.generateMesh(new double[TowerDrawer.DNA_SIZE]);
+        towerDrawer.init(resources);
     }
 
     @Override

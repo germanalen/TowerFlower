@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <germanalen.github.com.towerflower.MyGLSurfaceView
+    <germanalen.github.com.towerflower.graphics.MyGLSurfaceView
         android:id="@+id/glSurfaceView"
         android:layout_width="213dp"
         android:layout_height="289dp"

@@ -1,4 +1,4 @@
-package germanalen.github.com.towerflower;
+package germanalen.github.com.towerflower.database;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;

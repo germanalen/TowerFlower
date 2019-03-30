@@ -1,4 +1,6 @@
-package germanalen.github.com.towerflower;
+package germanalen.github.com.towerflower.graphics;
+
+import germanalen.github.com.towerflower.R;
 
 import android.content.res.Resources;
 import android.opengl.GLES20;
@@ -15,6 +17,8 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
+import germanalen.github.com.towerflower.MainActivity;
+
 public class TowerDrawer {
 
     private int shader;
@@ -23,7 +27,23 @@ public class TowerDrawer {
     private float phi = 0;
     private int numVertices = 0;
 
-    public TowerDrawer(Resources resources) {
+    private double[] dna = new double[DNA_SIZE];
+
+
+    public void setDna(double[] dna) {
+        if (dna.length != DNA_SIZE)
+            throw new RuntimeException("Wrong dna size");
+        this.dna = dna;
+    }
+
+
+    public TowerDrawer() {
+
+    }
+
+
+    // call after surface is created
+    public void init(Resources resources) {
         String vertexShaderCode = "";
         String fragmentShaderCode = "";
         try (InputStream is = resources.openRawResource(R.raw.tower_v)) {
@@ -45,7 +65,7 @@ public class TowerDrawer {
         GLES20.glAttachShader(shader, vertexShader);   // add the vertex shader to program
         GLES20.glAttachShader(shader, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(shader);                  // create OpenGL program executables
-
+        generateMesh();
     }
 
 
@@ -54,8 +74,6 @@ public class TowerDrawer {
         GLES20.glUseProgram(shader);
 
         phi += 1;
-
-        Log.d(MainActivity.TAG, "asdf");
 
         int vpos = GLES20.glGetAttribLocation(shader, "vpos");
         int vcolor = GLES20.glGetAttribLocation(shader, "vcolor");
@@ -114,7 +132,7 @@ public class TowerDrawer {
 
     public static final int DNA_SIZE = 5;
 
-    public void generateMesh(double[] dna) {
+    public void generateMesh() {
         // {vx, vy, vz, r, g, b, nx, ny, nz, ...}
         ArrayList<Float> v = new ArrayList<>();
 

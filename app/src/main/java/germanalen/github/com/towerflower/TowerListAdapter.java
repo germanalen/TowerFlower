@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import germanalen.github.com.towerflower.database.Tower;
+
 public class TowerListAdapter extends RecyclerView.Adapter<TowerListAdapter.TowerViewHolder> {
 
     class TowerViewHolder extends RecyclerView.ViewHolder {

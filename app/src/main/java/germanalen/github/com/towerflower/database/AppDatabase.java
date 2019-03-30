@@ -1,4 +1,4 @@
-package germanalen.github.com.towerflower;
+package germanalen.github.com.towerflower.database;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;

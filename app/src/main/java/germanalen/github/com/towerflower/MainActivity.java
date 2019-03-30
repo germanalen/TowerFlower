@@ -1,27 +1,12 @@
 package germanalen.github.com.towerflower;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.Toast;
-import java.util.List;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.opengl.GLSurfaceView;
-import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
+
+import germanalen.github.com.towerflower.database.TowerViewModel;
 
 
 public class MainActivity extends AppCompatActivity {

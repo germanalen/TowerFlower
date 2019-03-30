@@ -1,4 +1,4 @@
-package germanalen.github.com.towerflower;
+package germanalen.github.com.towerflower.graphics;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
