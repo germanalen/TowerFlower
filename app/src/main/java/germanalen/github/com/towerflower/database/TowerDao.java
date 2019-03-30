@@ -14,6 +14,9 @@ public interface TowerDao {
     @Query("SELECT * FROM tower_table")
     LiveData<List<Tower>> getAllTowers();
 
+    @Query("SELECT * FROM tower_table WHERE creator_name = :creator_name")
+    LiveData<List<Tower>> getUserTowers(String creator_name);
+
     @Query("DELETE FROM tower_table")
     void deleteAll();
 

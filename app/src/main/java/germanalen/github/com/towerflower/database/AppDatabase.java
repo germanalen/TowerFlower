@@ -51,9 +51,16 @@ public abstract class AppDatabase extends RoomDatabase {
             Tower tower= new Tower(1, "firstOne", "");
             tower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
             mDao.insert(tower);
-            tower = new Tower(2, "secondOne", "");
+            tower = new Tower(2, "firstOne", "");
             tower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
             mDao.insert(tower);
+            tower = new Tower(3, "secondOne", "");
+            tower.encodeDna(new double[]{0.2,0.1,0.9,0.6,0.2});
+            mDao.insert(tower);
+            tower = new Tower(4, "secondOne", "");
+            tower.encodeDna(new double[]{0.4,0.1,0.9,0.6,0.2});
+            mDao.insert(tower);
+
             return null;
         }
     }

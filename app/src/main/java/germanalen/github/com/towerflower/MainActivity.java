@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         mTowerViewModel = ViewModelProviders.of(this).get(TowerViewModel.class);
 
-        mTowerViewModel.getAllTowers().observe(this, new Observer<List<Tower>>() {
+        mTowerViewModel.getUserTowers().observe(this, new Observer<List<Tower>>() {
             @Override
             public void onChanged(@Nullable final List<Tower> towers) {
                 // Update the cached copy of the words in the adapter.

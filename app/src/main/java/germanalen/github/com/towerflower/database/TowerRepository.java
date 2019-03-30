@@ -9,15 +9,21 @@ import java.util.List;
 public class TowerRepository {
     private TowerDao mTowerDao;
     private LiveData<List<Tower>> mAllTowers;
+    private LiveData<List<Tower>> mUserTowers;
 
     TowerRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         mTowerDao = db.towerDao();
         mAllTowers = mTowerDao.getAllTowers();
+        mUserTowers = mTowerDao.getUserTowers("firstOne");
     }
 
     LiveData<List<Tower>> getAllTowers() {
         return mAllTowers;
+    }
+
+    LiveData<List<Tower>> getUserTowers() {
+        return mUserTowers;
     }
 
     public void insert(Tower tower) {
