@@ -78,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
                     Nearby.getConnectionsClient(MainActivity.this).acceptConnection(endpointId, new PayloadCallback() {
                         @Override
                         public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
-
+                            byte[] bytes = payload.asBytes();
+                            String dna = new String(bytes);
+                            Log.d(TAG, dna);
                         }
 
                         @Override
@@ -93,7 +95,11 @@ public class MainActivity extends AppCompatActivity {
                     switch (result.getStatus().getStatusCode()) {
                         case ConnectionsStatusCodes.STATUS_OK:
                             // We're connected! Can now start sending and receiving data.
+
                             Log.d(TAG, "connected");
+                            String dna = "zxcv";
+                            Payload payload = Payload.fromBytes(dna.getBytes());
+                            Nearby.getConnectionsClient(MainActivity.this).sendPayload(endpointId, payload);
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
                             // The connection was rejected by one or both sides.
