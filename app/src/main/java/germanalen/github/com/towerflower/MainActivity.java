@@ -28,6 +28,8 @@ import com.google.android.gms.nearby.connection.Payload;
 import com.google.android.gms.nearby.connection.PayloadCallback;
 import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
 import com.google.android.gms.nearby.connection.Strategy;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TowerViewModel mTowerViewModel;
     public static final String TAG = "TOWER_FLOWER";
-/*
+
     private final EndpointDiscoveryCallback endpointDiscoveryCallback =
             new EndpointDiscoveryCallback() {
                 @Override
@@ -47,14 +49,18 @@ public class MainActivity extends AppCompatActivity {
                     // An endpoint was found. We request a connection to it.
                     Nearby.getConnectionsClient(MainActivity.this)
                             .requestConnection("test", endpointId, connectionLifecycleCallback)
-                            .addOnSuccessListener(
-                                    (Void unused) -> {
-                                        Log.d(TAG, "found advertiser");
-                                    })
-                            .addOnFailureListener(
-                                    (Exception e) -> {
-                                        // Nearby Connections failed to request the connection.
-                                    });
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "Advertiser found");
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                }
+                            });
                 }
 
                 @Override
@@ -106,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                     // sent or received.
                 }
             };
-*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,44 +128,48 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-/*
-
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
 
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+//
+//
+//        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+//
+//        final MyAdapter mAdapter = new MyAdapter();
+//        recyclerView.setAdapter(mAdapter);
+//
+//
+//        mTowerViewModel = ViewModelProviders.of(this).get(TowerViewModel.class);
+//
+//        mTowerViewModel.getUserTowers().observe(this, new Observer<List<Tower>>() {
+//            @Override
+//            public void onChanged(@Nullable final List<Tower> towers) {
+//                // Update the cached copy of the words in the adapter.
+//                mAdapter.setTowers(towers);
+//            }
+//        });
 
-        final MyAdapter mAdapter = new MyAdapter();
-        recyclerView.setAdapter(mAdapter);
-
-
-        mTowerViewModel = ViewModelProviders.of(this).get(TowerViewModel.class);
-
-        mTowerViewModel.getUserTowers().observe(this, new Observer<List<Tower>>() {
-            @Override
-            public void onChanged(@Nullable final List<Tower> towers) {
-                // Update the cached copy of the words in the adapter.
-                mAdapter.setTowers(towers);
-            }
-        });
-*/
 
     }
-/*
+
     public void startAdvertising(View view) {
         AdvertisingOptions advertisingOptions =
                 new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_STAR).build();
         Nearby.getConnectionsClient(this)
                 .startAdvertising( // TODO IF WRONG THEN CHANGE SERVICE ID
                         "test", "1", connectionLifecycleCallback, advertisingOptions)
-                .addOnSuccessListener(
-                        (Void unused) -> {
-                            // We're advertising!
-                        })
-                .addOnFailureListener(
-                        (Exception e) -> {
-                            // We were unable to start advertising.
-                        });
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Advertising started");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
 
     public void startDiscovery(View view) {
@@ -167,14 +177,18 @@ public class MainActivity extends AppCompatActivity {
                 new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_STAR).build();
         Nearby.getConnectionsClient(this)
                 .startDiscovery("1", endpointDiscoveryCallback, discoveryOptions)
-                .addOnSuccessListener(
-                        (Void unused) -> {
-                            // We're discovering!
-                        })
-                .addOnFailureListener(
-                        (Exception e) -> {
-                            // We're unable to start discovering.
-                        });
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "Discovery started");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
     }
-    */
+
 }
