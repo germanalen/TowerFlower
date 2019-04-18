@@ -14,30 +14,24 @@ import org.json.JSONObject;
 import germanalen.github.com.towerflower.MainActivity;
 import germanalen.github.com.towerflower.graphics.TowerDrawer;
 
-@Entity(tableName = "tower_table")
 public class Tower implements Parcelable {
-    @PrimaryKey
-    public int id;
 
-    @ColumnInfo(name = "creator_name")
     public String creatorName;
 
-    @ColumnInfo(name = "dna_json")
     public String dnaJson;
 
     public Tower() {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Tower(int id, String creatorName, String dnaJson) {
-        this.id = id;
+    public Tower(String creatorName, String dnaJson) {
         this.creatorName = creatorName;
         this.dnaJson = dnaJson;
     }
 
     @Override
     public String toString() {
-        return "id: " + id + "; Creator: " + creatorName + "; dna: " + dnaJson;
+        return "Creator: " + creatorName + "; dna: " + dnaJson;
     }
 
     public double[] decodeDna() {
@@ -77,7 +71,6 @@ public class Tower implements Parcelable {
     }
 
     public void writeToParcel(Parcel out, int flags) {
-        out.writeInt(id);
         out.writeString(creatorName);
         out.writeString(dnaJson);
     }
@@ -94,7 +87,6 @@ public class Tower implements Parcelable {
     };
 
     private Tower(Parcel in) {
-        id = in.readInt();
         creatorName = in.readString();
         dnaJson = in.readString();
     }

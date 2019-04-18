@@ -36,27 +36,31 @@ public class MainActivity extends AppCompatActivity {
         //
         // Firebase part
         //
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towers");
 
-        Tower testTower = new Tower(1, "firstOne", "");
+        Tower testTower = new Tower("firstOne", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
-        testTower = new Tower(2, "firstOne", "");
-        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        DatabaseReference databaseRef = database.push();
+        String testId = databaseRef.getKey();
+        Log.d(TAG, "First Key: " + testId);
+        databaseRef.setValue(testTower);
 
-        testTower = new Tower(3, "firstOneq", "");
+        testTower = new Tower("firstOne", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
-        testTower = new Tower(4, "firstOneq", "");
+        database.push().setValue(testTower);
+
+        testTower = new Tower("firstOneq", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
-        testTower = new Tower(5, "firstOneq", "");
+        database.push().setValue(testTower);
+        testTower = new Tower("firstOneq", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        database.push().setValue(testTower);
+        testTower = new Tower("firstOneq", "");
+        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
+        database.push().setValue(testTower);
 
         // Read from database
-        database.child("towers").addValueEventListener(new ValueEventListener() {
+        database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {

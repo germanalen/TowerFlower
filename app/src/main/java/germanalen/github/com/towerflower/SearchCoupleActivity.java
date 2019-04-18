@@ -71,8 +71,8 @@ public class SearchCoupleActivity extends AppCompatActivity {
                         public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
                             byte[] bytes = payload.asBytes();
                             String arrivedDna = new String(bytes);
-                            Tower tempTowerToGetDecodedDna = new Tower(0, "java", arrivedDna);
-                            Tower babyTower = new Tower(selectedTower.id * 2, UserData.getUsername(), "");
+                            Tower tempTowerToGetDecodedDna = new Tower("java", arrivedDna);
+                            Tower babyTower = new Tower(UserData.getUsername(), "");
                             double[] babyDna = new double[5];
                             for (int i = 0; i < 5; ++i) {
                                 babyDna[i] = (selectedTower.decodeDna()[i] + tempTowerToGetDecodedDna.decodeDna()[i]) / 2;
@@ -80,8 +80,8 @@ public class SearchCoupleActivity extends AppCompatActivity {
                             babyTower.encodeDna(babyDna);
 
                             // Pushing baby to database
-                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-                            database.child("towers").child(String.valueOf(babyTower.id)).setValue(babyTower);
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towers");
+                            database.push().setValue(babyTower);
 
                             Log.d(TAG, "Arrived dna: " + arrivedDna);
                         }

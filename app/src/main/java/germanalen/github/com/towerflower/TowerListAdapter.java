@@ -37,7 +37,7 @@ public class TowerListAdapter extends RecyclerView.Adapter<TowerListAdapter.Towe
     public void onBindViewHolder(TowerViewHolder holder, int position) {
         if (mTowers != null) {
             Tower current = mTowers.get(position);
-            holder.towerItemView.setText(current.id + " " + current.creatorName);
+            holder.towerItemView.setText(current.creatorName);
         } else {
             // Covers the case of data not being ready yet.
             holder.towerItemView.setText("No Tower");

@@ -1,14 +1,11 @@
 package germanalen.github.com.towerflower;
 
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
 import germanalen.github.com.towerflower.database.Tower;
-import germanalen.github.com.towerflower.database.TowerViewModel;
 import germanalen.github.com.towerflower.graphics.MyGLRenderer;
 import germanalen.github.com.towerflower.graphics.MyGLSurfaceView;
 import germanalen.github.com.towerflower.graphics.TowerDrawer;
@@ -64,8 +61,6 @@ public class TowerEditorActivity extends AppCompatActivity {
         tower.encodeDna(getDnaFromUi());
 
         // TODO update via firebase database
-        TowerViewModel towerViewModel = ViewModelProviders.of(this).get(TowerViewModel.class);
-        towerViewModel.update(tower);
     }
 
     private double[] getDnaFromUi() {
