@@ -25,13 +25,20 @@ public class Tower implements Parcelable {
     @ColumnInfo(name = "dna_json")
     public String dnaJson;
 
+    public Tower() {
+        // Default constructor required for calls to DataSnapshot.getValue(Post.class)
+    }
+
     public Tower(int id, String creatorName, String dnaJson) {
         this.id = id;
         this.creatorName = creatorName;
         this.dnaJson = dnaJson;
     }
 
-
+    @Override
+    public String toString() {
+        return "id: " + id + "; Creator: " + creatorName + "; dna: " + dnaJson;
+    }
 
     public double[] decodeDna() {
         double[] dna = new double[TowerDrawer.DNA_SIZE];

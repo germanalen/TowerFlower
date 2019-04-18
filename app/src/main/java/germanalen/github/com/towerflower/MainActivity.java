@@ -1,200 +1,115 @@
 package germanalen.github.com.towerflower;
 
-import android.Manifest;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.pm.PackageManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
-
-import android.support.v7.widget.GridLayoutManager;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.nearby.Nearby;
-import com.google.android.gms.nearby.connection.AdvertisingOptions;
-import com.google.android.gms.nearby.connection.ConnectionInfo;
-import com.google.android.gms.nearby.connection.ConnectionLifecycleCallback;
-import com.google.android.gms.nearby.connection.ConnectionResolution;
-import com.google.android.gms.nearby.connection.ConnectionsStatusCodes;
-import com.google.android.gms.nearby.connection.DiscoveredEndpointInfo;
-import com.google.android.gms.nearby.connection.DiscoveryOptions;
-import com.google.android.gms.nearby.connection.EndpointDiscoveryCallback;
-import com.google.android.gms.nearby.connection.Payload;
-import com.google.android.gms.nearby.connection.PayloadCallback;
-import com.google.android.gms.nearby.connection.PayloadTransferUpdate;
-import com.google.android.gms.nearby.connection.Strategy;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import germanalen.github.com.towerflower.database.Tower;
-import germanalen.github.com.towerflower.database.TowerViewModel;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private TowerViewModel mTowerViewModel;
     public static final String TAG = "TOWER_FLOWER";
+    private ArrayList<Tower> towerList= new ArrayList<>();
 
-    private final EndpointDiscoveryCallback endpointDiscoveryCallback =
-            new EndpointDiscoveryCallback() {
-                @Override
-                public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
-                    // An endpoint was found. We request a connection to it.
-                    Nearby.getConnectionsClient(MainActivity.this)
-                            .requestConnection("test", endpointId, connectionLifecycleCallback)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "Advertiser found");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-
-                                }
-                            });
-                }
-
-                @Override
-                public void onEndpointLost(String endpointId) {
-                    // A previously discovered endpoint has gone away.
-                }
-            };
-
-    private final ConnectionLifecycleCallback connectionLifecycleCallback =
-            new ConnectionLifecycleCallback() {
-                @Override
-                public void onConnectionInitiated(String endpointId, ConnectionInfo connectionInfo) {
-                    // Automatically accept the connection on both sides.
-                    Log.d(TAG, "connection initiated");
-                    Nearby.getConnectionsClient(MainActivity.this).acceptConnection(endpointId, new PayloadCallback() {
-                        @Override
-                        public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
-                            byte[] bytes = payload.asBytes();
-                            String dna = new String(bytes);
-                            Log.d(TAG, dna);
-                        }
-
-                        @Override
-                        public void onPayloadTransferUpdate(@NonNull String s, @NonNull PayloadTransferUpdate payloadTransferUpdate) {
-
-                        }
-                    });
-                }
-
-                @Override
-                public void onConnectionResult(String endpointId, ConnectionResolution result) {
-                    switch (result.getStatus().getStatusCode()) {
-                        case ConnectionsStatusCodes.STATUS_OK:
-                            // We're connected! Can now start sending and receiving data.
-
-                            Log.d(TAG, "connected");
-                            String dna = "zxcv";
-                            Payload payload = Payload.fromBytes(dna.getBytes());
-                            Nearby.getConnectionsClient(MainActivity.this).sendPayload(endpointId, payload);
-                            break;
-                        case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
-                            // The connection was rejected by one or both sides.
-                            break;
-                        case ConnectionsStatusCodes.STATUS_ERROR:
-                            // The connection broke before it was able to be accepted.
-                            break;
-                        default:
-                            // Unknown status code
-                    }
-                }
-
-                @Override
-                public void onDisconnected(String endpointId) {
-                    // We've been disconnected from this endpoint. No more data can be
-                    // sent or received.
-                }
-            };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Requesting permission
-        /* omitted believing its not necessary
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
+        setContentView(R.layout.loading);
+        //
+        // Firebase part
+        //
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
-        }
-        */
-        setContentView(R.layout.activity_main);
+        Tower testTower = new Tower(1, "firstOne", "");
+        testTower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
+        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        testTower = new Tower(2, "firstOne", "");
+        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
+        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
 
+        testTower = new Tower(3, "firstOneq", "");
+        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
+        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        testTower = new Tower(4, "firstOneq", "");
+        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
+        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        testTower = new Tower(5, "firstOneq", "");
+        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
+        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
 
+        // Read from database
+        database.child("towers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                    Tower tower = childDataSnapshot.getValue(Tower.class);
+                    if (tower.creatorName.equals(UserData.getUsername())) {
+                        towerList.add(tower);
+                    }
+                }
 
+                if (towerList.isEmpty()) {
+                    // Notify user that he is new and offer to build his first tower via AlertDialog
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage("Want to create one?")
+                            .setTitle("You have no towers");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            Intent intent = new Intent(MainActivity.this, SearchCoupleActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+                    AlertDialog dialog = builder.create();
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
 
+                } else {
+                    UserData.setUserTowers(towerList);
+                    setContentView(R.layout.activity_main);
+                }
+            }
 
-//        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-//
-//
-//        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-//
-//        final MyAdapter mAdapter = new MyAdapter();
-//        recyclerView.setAdapter(mAdapter);
-//
-//
-//        mTowerViewModel = ViewModelProviders.of(this).get(TowerViewModel.class);
-//
-//        mTowerViewModel.getUserTowers().observe(this, new Observer<List<Tower>>() {
-//            @Override
-//            public void onChanged(@Nullable final List<Tower> towers) {
-//                // Update the cached copy of the words in the adapter.
-//                mAdapter.setTowers(towers);
-//            }
-//        });
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.w(TAG, "Failed to read value.", databaseError.toException());
+            }
+        });
 
 
     }
 
-    public void startAdvertising(View view) {
-        AdvertisingOptions advertisingOptions =
-                new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_STAR).build();
-        Nearby.getConnectionsClient(this)
-                .startAdvertising( // TODO IF WRONG THEN CHANGE SERVICE ID
-                        "test", "1", connectionLifecycleCallback, advertisingOptions)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Advertising started");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
+    public void startTowersOverviewActivity(View view) {
+        Intent intent = new Intent(this, TowersOverviewActivity.class);
+        intent.putExtra("condition", 0);
+        startActivity(intent);
     }
-
-    public void startDiscovery(View view) {
-        DiscoveryOptions discoveryOptions =
-                new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_STAR).build();
-        Nearby.getConnectionsClient(this)
-                .startDiscovery("1", endpointDiscoveryCallback, discoveryOptions)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Discovery started");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
+    public void startSearchCoupleActivity(View view) {
+        Intent intent = new Intent(this, TowersOverviewActivity.class);
+        intent.putExtra("condition", 1);
+        startActivity(intent);
     }
-
 }

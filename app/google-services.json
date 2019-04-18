@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "812727366936",
+    "firebase_url": "https://tower-flower-firebase.firebaseio.com",
+    "project_id": "tower-flower-firebase",
+    "storage_bucket": "tower-flower-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:812727366936:android:a778845f3d8331a5",
+        "android_client_info": {
+          "package_name": "germanalen.github.com.towerflower"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "812727366936-luaft96977m3unn5c4botka2egqblgcg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtRzQult3WckoEYWvOw07hSwokPJIJMlY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "812727366936-luaft96977m3unn5c4botka2egqblgcg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

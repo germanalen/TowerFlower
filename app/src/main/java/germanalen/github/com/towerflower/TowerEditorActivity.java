@@ -63,6 +63,7 @@ public class TowerEditorActivity extends AppCompatActivity {
 
         tower.encodeDna(getDnaFromUi());
 
+        // TODO update via firebase database
         TowerViewModel towerViewModel = ViewModelProviders.of(this).get(TowerViewModel.class);
         towerViewModel.update(tower);
     }
