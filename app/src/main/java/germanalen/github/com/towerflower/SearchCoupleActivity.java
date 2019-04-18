@@ -39,7 +39,7 @@ public class SearchCoupleActivity extends AppCompatActivity {
                 public void onEndpointFound(String endpointId, DiscoveredEndpointInfo info) {
                     // An endpoint was found. We request a connection to it.
                     Nearby.getConnectionsClient(SearchCoupleActivity.this)
-                            .requestConnection("test", endpointId, connectionLifecycleCallback)
+                            .requestConnection(UserData.getUsername(), endpointId, connectionLifecycleCallback)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -67,10 +67,13 @@ public class SearchCoupleActivity extends AppCompatActivity {
                     // Automatically accept the connection on both sides.
                     Log.d(TAG, "connection initiated");
                     Nearby.getConnectionsClient(SearchCoupleActivity.this).acceptConnection(endpointId, new PayloadCallback() {
+
                         @Override
                         public void onPayloadReceived(@NonNull String s, @NonNull Payload payload) {
                             byte[] bytes = payload.asBytes();
                             String arrivedDna = new String(bytes);
+                            Log.d(TAG, "Arrived dna: " + arrivedDna);
+
                             Tower tempTowerToGetDecodedDna = new Tower("java", arrivedDna);
                             Tower babyTower = new Tower(UserData.getUsername(), "");
                             double[] babyDna = new double[5];
@@ -80,10 +83,9 @@ public class SearchCoupleActivity extends AppCompatActivity {
                             babyTower.encodeDna(babyDna);
 
                             // Pushing baby to database
+                            Log.d(TAG, "baby: " + babyTower);
                             DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towers");
                             database.push().setValue(babyTower);
-
-                            Log.d(TAG, "Arrived dna: " + arrivedDna);
                         }
 
                         @Override
@@ -102,6 +104,9 @@ public class SearchCoupleActivity extends AppCompatActivity {
                             Log.d(TAG, "connected");
                             String dna = selectedTower.dnaJson;
                             Payload payload = Payload.fromBytes(dna.getBytes());
+                            byte[] bytes = payload.asBytes();
+                            String arrivedDna = new String(bytes);
+                            Log.d(TAG, "Sent dna: " + arrivedDna);
                             Nearby.getConnectionsClient(SearchCoupleActivity.this).sendPayload(endpointId, payload);
                             break;
                         case ConnectionsStatusCodes.STATUS_CONNECTION_REJECTED:
@@ -151,7 +156,7 @@ public class SearchCoupleActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_search_couple);
         selectedTower = getIntent().getParcelableExtra("tower");
-        startDiscovery();
+        // startDiscovery();
     }
 
     public void startAdvertising(View view) {
@@ -159,7 +164,7 @@ public class SearchCoupleActivity extends AppCompatActivity {
                 new AdvertisingOptions.Builder().setStrategy(Strategy.P2P_STAR).build();
         Nearby.getConnectionsClient(this)
                 .startAdvertising( // TODO IF WRONG THEN CHANGE SERVICE ID
-                        "test", "1", connectionLifecycleCallback, advertisingOptions)
+                        UserData.getUsername(), "UNIQUE_SERVICE_ID_VERY_UNIQUE", connectionLifecycleCallback, advertisingOptions)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -169,16 +174,16 @@ public class SearchCoupleActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-
+                        Log.w(TAG, "Advertising failed");
                     }
                 });
     }
 
-    public void startDiscovery() {
+    public void startDiscovery(View view) {
         DiscoveryOptions discoveryOptions =
                 new DiscoveryOptions.Builder().setStrategy(Strategy.P2P_STAR).build();
         Nearby.getConnectionsClient(this)
-                .startDiscovery("1", endpointDiscoveryCallback, discoveryOptions)
+                .startDiscovery("UNIQUE_SERVICE_ID_VERY_UNIQUE", endpointDiscoveryCallback, discoveryOptions)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {

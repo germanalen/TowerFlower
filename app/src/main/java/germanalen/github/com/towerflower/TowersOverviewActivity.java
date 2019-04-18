@@ -22,7 +22,7 @@ import germanalen.github.com.towerflower.database.Tower;
 
 public class TowersOverviewActivity extends AppCompatActivity {
     public static final String TAG = "TOWER_FLOWER";
-    private ArrayList<Tower> mAllTowers;
+    private ArrayList<Tower> mAllTowers = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_towers_oveview);
@@ -41,7 +41,7 @@ public class TowersOverviewActivity extends AppCompatActivity {
         final MyAdapter mAdapter = new MyAdapter(condition);
         recyclerView.setAdapter(mAdapter);
 
-
+        mAllTowers.clear();
         mAllTowers = UserData.getUserTowers();
         mAdapter.setTowers(mAllTowers);
 

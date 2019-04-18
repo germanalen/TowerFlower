@@ -38,31 +38,19 @@ public class MainActivity extends AppCompatActivity {
         //
         DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towers");
 
-        Tower testTower = new Tower("firstOne", "");
-        testTower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
-        DatabaseReference databaseRef = database.push();
-        String testId = databaseRef.getKey();
-        Log.d(TAG, "First Key: " + testId);
-        databaseRef.setValue(testTower);
-
-        testTower = new Tower("firstOne", "");
-        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.push().setValue(testTower);
-
-        testTower = new Tower("firstOneq", "");
-        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.push().setValue(testTower);
-        testTower = new Tower("firstOneq", "");
-        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.push().setValue(testTower);
-        testTower = new Tower("firstOneq", "");
-        testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.push().setValue(testTower);
+//        Tower testTower = new Tower("firstOne", "");
+//        testTower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
+//        database.push().setValue(testTower);
+//
+//        testTower = new Tower("firstOneq", "");
+//        testTower.encodeDna(new double[]{0.1,0.9,0.9,0.8,0.6});
+//        database.push().setValue(testTower);
 
         // Read from database
         database.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                towerList.clear();
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
                     Tower tower = childDataSnapshot.getValue(Tower.class);
                     if (tower.creatorName.equals(UserData.getUsername())) {
@@ -92,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
                     dialog.show();
 
                 } else {
+
                     UserData.setUserTowers(towerList);
                     setContentView(R.layout.activity_main);
                 }
