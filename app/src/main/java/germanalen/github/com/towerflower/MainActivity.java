@@ -36,27 +36,27 @@ public class MainActivity extends AppCompatActivity {
         //
         // Firebase part
         //
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference();
 
         Tower testTower = new Tower(1, "firstOne", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        database.child("towersx").child(String.valueOf(testTower.id)).setValue(testTower);
         testTower = new Tower(2, "firstOne", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        database.child("towersx").child(String.valueOf(testTower.id)).setValue(testTower);
 
         testTower = new Tower(3, "firstOneq", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        database.child("towersx").child(String.valueOf(testTower.id)).setValue(testTower);
         testTower = new Tower(4, "firstOneq", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        database.child("towersx").child(String.valueOf(testTower.id)).setValue(testTower);
         testTower = new Tower(5, "firstOneq", "");
         testTower.encodeDna(new double[]{0.9,0.1,0.9,0.2,0.4});
-        database.child("towers").child(String.valueOf(testTower.id)).setValue(testTower);
+        database.child("towersx").child(String.valueOf(testTower.id)).setValue(testTower);
 
         // Read from database
-        database.child("towers").addValueEventListener(new ValueEventListener() {
+        database.child("towersx").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
@@ -73,9 +73,15 @@ public class MainActivity extends AppCompatActivity {
                             .setTitle("You have no towers");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(MainActivity.this, SearchCoupleActivity.class);
+                            Tower tower= new Tower(10, UserData.getUsername(), "");
+                            tower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
+                            database.child("towersx").push().setValue(tower);
+
+                            Intent intent = new Intent(MainActivity.this, TowerEditorActivity.class);
+                            intent.putExtra("tower", tower);
                             startActivity(intent);
-                            finish();
+                            UserData.setUserTowers(towerList);
+                            setContentView(R.layout.activity_main);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
