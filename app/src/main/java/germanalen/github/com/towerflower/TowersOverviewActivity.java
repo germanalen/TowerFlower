@@ -45,8 +45,26 @@ public class TowersOverviewActivity extends AppCompatActivity {
         mAllTowers = UserData.getUserTowers();
         mAdapter.setTowers(mAllTowers);
 
-//        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference();
-//        databaseRef.child("towers").addValueEventListener(new ValueEventListener() {
+        DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference().child("towersx");
+        databaseRef.addValueEventListener(new ValueEventListener() {
+              @Override
+              public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                  mAllTowers.clear();
+                  for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {
+                      Tower tower = childDataSnapshot.getValue(Tower.class);
+                      if (tower.creatorName.equals(UserData.getUsername())) {
+                          mAllTowers.add(tower);
+                      }
+                  }
+                  UserData.setUserTowers(mAllTowers);
+                  mAdapter.setTowers(mAllTowers);
+              }
+
+              @Override
+              public void onCancelled(@NonNull DatabaseError databaseError) {
+
+              }
+          });
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                for (DataSnapshot childDataSnapshot : dataSnapshot.getChildren()) {

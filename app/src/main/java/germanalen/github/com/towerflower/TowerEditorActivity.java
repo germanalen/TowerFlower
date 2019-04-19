@@ -2,8 +2,13 @@ package germanalen.github.com.towerflower;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import germanalen.github.com.towerflower.database.Tower;
 import germanalen.github.com.towerflower.graphics.MyGLRenderer;
@@ -54,13 +59,27 @@ public class TowerEditorActivity extends AppCompatActivity {
         }
     }
 
+
+    public void save(View v) {
+        Log.d(MainActivity.TAG, "qwerqwerfwq34fq3");
+        tower.encodeDna(getDnaFromUi());
+
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towersx");
+        Log.d(MainActivity.TAG, database.getKey());
+        Log.d(MainActivity.TAG, tower.getId());
+        Log.d(MainActivity.TAG, tower.toString());
+        database.child(tower.getId()).setValue(tower);
+        finish();
+    }
+
+
     @Override
     protected void onStop() {
         super.onStop();
 
-        tower.encodeDna(getDnaFromUi());
 
-        // TODO update via firebase database
+
+
     }
 
     private double[] getDnaFromUi() {

@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         //
         // Firebase part
         //
-        DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towers");
+
+        final DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towersx");
 
 //        Tower testTower = new Tower("firstOne", "");
 //        testTower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
@@ -65,9 +66,18 @@ public class MainActivity extends AppCompatActivity {
                             .setTitle("You have no towers");
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            Intent intent = new Intent(MainActivity.this, SearchCoupleActivity.class);
+                            Tower tower= new Tower(UserData.getUsername(), "");
+                            tower.encodeDna(new double[]{0.9,0.1,0.1,0.2,0.4});
+                            DatabaseReference myref = database.push();
+                            tower.setId(myref.getKey());
+                            myref.setValue(tower);
+
+                            Intent intent = new Intent(MainActivity.this, TowerEditorActivity.class);
+                            intent.putExtra("tower", tower);
                             startActivity(intent);
-                            finish();
+                            UserData.setUserTowers(towerList);
+                            setContentView(R.layout.activity_main);
+                            dialog.dismiss();
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

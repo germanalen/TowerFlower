@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.nearby.Nearby;
 import com.google.android.gms.nearby.connection.AdvertisingOptions;
@@ -84,8 +85,12 @@ public class SearchCoupleActivity extends AppCompatActivity {
 
                             // Pushing baby to database
                             Log.d(TAG, "baby: " + babyTower);
-                            DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towers");
-                            database.push().setValue(babyTower);
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference().child("towersx");
+                            DatabaseReference myref = database.push();
+                            babyTower.setId(myref.getKey());
+                            myref.setValue(babyTower);
+                            Toast.makeText(SearchCoupleActivity.this, "SUCCESS", Toast.LENGTH_SHORT).show();
+                            finish();
                         }
 
                         @Override
@@ -169,12 +174,16 @@ public class SearchCoupleActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Advertising started");
+                        setContentView(R.layout.loading);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(TAG, "Advertising failed");
+                        Toast.makeText(SearchCoupleActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
     }
@@ -188,12 +197,15 @@ public class SearchCoupleActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(TAG, "Discovery started");
+                        setContentView(R.layout.loading);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.d(TAG, "Discovery failed");
+                        Toast.makeText(SearchCoupleActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
     }

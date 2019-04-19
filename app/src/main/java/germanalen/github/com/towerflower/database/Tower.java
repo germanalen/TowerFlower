@@ -7,6 +7,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.firebase.database.annotations.NotNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,6 +18,7 @@ import germanalen.github.com.towerflower.graphics.TowerDrawer;
 
 public class Tower implements Parcelable {
 
+    public String id;
     public String creatorName;
 
     public String dnaJson;
@@ -24,7 +27,7 @@ public class Tower implements Parcelable {
         // Default constructor required for calls to DataSnapshot.getValue(Post.class)
     }
 
-    public Tower(String creatorName, String dnaJson) {
+    public Tower(@NotNull String creatorName, String dnaJson) {
         this.creatorName = creatorName;
         this.dnaJson = dnaJson;
     }
@@ -32,6 +35,15 @@ public class Tower implements Parcelable {
     @Override
     public String toString() {
         return "Creator: " + creatorName + "; dna: " + dnaJson;
+    }
+
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public double[] decodeDna() {
@@ -71,6 +83,7 @@ public class Tower implements Parcelable {
     }
 
     public void writeToParcel(Parcel out, int flags) {
+        out.writeString(id);
         out.writeString(creatorName);
         out.writeString(dnaJson);
     }
@@ -87,6 +100,7 @@ public class Tower implements Parcelable {
     };
 
     private Tower(Parcel in) {
+        id = in.readString();
         creatorName = in.readString();
         dnaJson = in.readString();
     }
